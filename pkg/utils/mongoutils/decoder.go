@@ -6,6 +6,18 @@ import (
 	"go.mongodb.org/mongo-driver/v2/mongo"
 )
 
+// DecodeFromCursor reads all documents from the given MongoDB cursor and decodes
+// them into a slice of the specified generic type `Output`.
+//
+// It automatically closes the cursor after reading. If any decoding error occurs,
+// the function returns nil and the error.
+//
+// Example usage:
+//
+//	var results []MyStruct
+//	results, err := DecodeFromCursor[MyStruct](cursor)
+//
+// Returns a slice of decoded documents or an error.
 func DecodeFromCursor[Output any](cursor *mongo.Cursor) ([]Output, error) {
 	defer func() { _ = cursor.Close(context.Background()) }()
 
